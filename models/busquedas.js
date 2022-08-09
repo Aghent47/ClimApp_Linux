@@ -28,9 +28,15 @@ export class Busquedas {
 
             const data =  await instance.get();
 
-            console.log(data.data);
+            //returnamos un objeto de forma implicita.
+            return data.data.features.map(lugar => ({
+                //extraemos las propiedades que me interesan del objeto
+                id: lugar.id,
+                nombre: lugar.place_name,
+                lng: lugar.center[0],
+                lat: lugar.center[1],
 
-            return [];
+            }))
 
         }catch(error){
 

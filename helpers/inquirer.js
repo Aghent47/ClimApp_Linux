@@ -18,7 +18,7 @@ const questions = [
       },
       {
         value: 0,
-        name: `${'0.'.green} Listar tareas completadas`,
+        name: `${'0.'.green} Salir`,
       },
     ],
   },
@@ -73,14 +73,14 @@ export const leerInput = async( message ) =>{
   return desc;
 }
 
-export const listadoTareasBorrar = async( tareas = [] ) => {
+export const listarLugares = async( lugares = [] ) => {
 
-  const choices = tareas.map((tarea, i ) => {
+  const choices = lugares.map((lugar, i ) => {
 
     const idx = `${i + 1}`.green;
     return {
-      value: tarea.id,
-      name: `${ idx }. ${tarea.desc}`
+      value: lugar.id,
+      name: `${ idx }. ${lugar.nombre}`,
     }
   });
 
@@ -93,7 +93,7 @@ export const listadoTareasBorrar = async( tareas = [] ) => {
     {
       type: 'list',
       name: 'id',
-      message: 'Borrar',
+      message: 'Seleccione un lugar:',
       choices
     }
   ];
