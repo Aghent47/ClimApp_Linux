@@ -11,6 +11,7 @@ export class Busquedas {
 
     constructor() {
         //TODO: Leer DB
+        this.leerDB();
     }
 
 
@@ -30,6 +31,12 @@ export class Busquedas {
             lang: "es",
         }
     }
+
+    get historialCapitalizador() {
+        // Capitalizando cada palabra
+        return this.historial.map(lugar => lugar.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase()))));
+    }
+
 
     async ciudad(lugar='') {
         
@@ -97,12 +104,17 @@ export class Busquedas {
             return;
         }
 
+        //candidad de data en el historial.
+        this.historial = this.historial.splice(0,5);
+
+
         this.historial.unshift(lugar.toLocaleLowerCase());
 
         // Grabar en DB
         this.guardarDB();
     }
 
+    // Metodo de guardare en DB.
     guardarDB(){
 
         const payload = {
@@ -112,9 +124,17 @@ export class Busquedas {
         fs.writeFileSync(this.dbpath , JSON.stringify( payload ));
     }
 
-
+    // Metodo leer BD
     leerDB(){
-    
+        //debe de existir...
+        if(!fs.existsSync(this.dbpath)){
+            return;
+        }
+
+        const info = fs.readFileSync(this.dbpath , 'utf8');
+        const data = JSON.parse(info.toString());
+        this.historial = data.historial;
+
     }
 
 
