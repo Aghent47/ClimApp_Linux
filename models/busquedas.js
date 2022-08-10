@@ -1,8 +1,14 @@
+import fs from 'fs';
 import axios from "axios";
+
 
 export class Busquedas {
 
     historial = [];
+    dbpath = './db/databse.json';
+
+
+
     constructor() {
         //TODO: Leer DB
     }
@@ -83,6 +89,33 @@ export class Busquedas {
 
     }
 
+
+     async agregarHistorial(lugar='') {
+
+        //: TODO: prevenir duplicados
+        if( this.historial.includes( lugar.toLocaleLowerCase())){
+            return;
+        }
+
+        this.historial.unshift(lugar.toLocaleLowerCase());
+
+        // Grabar en DB
+        this.guardarDB();
+    }
+
+    guardarDB(){
+
+        const payload = {
+            historial: this.historial
+        }
+
+        fs.writeFileSync(this.dbpath , JSON.stringify( payload ));
+    }
+
+
+    leerDB(){
+    
+    }
 
 
 
